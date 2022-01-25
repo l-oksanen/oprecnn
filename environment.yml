@@ -1,0 +1,10 @@
+name: pytorch
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - torchvision=0.11.1
+  - pytorch=1.10.0
+  - cpuonly=2.0
+  - torchaudio=0.10.0
+  - ipykernel=6.7.0
