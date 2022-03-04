@@ -19,7 +19,7 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
 
     for x in range(5):
         print("kierros ", x+1)
-        for epoch in range(2): 
+        for epoch in range(3): 
             print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
