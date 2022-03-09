@@ -1,6 +1,8 @@
 
 import numpy as np
 import torch
+import time
+# import datetime
 
 import opnet
 from simple_inversion_data import generate_data, save_data, load_data
@@ -17,10 +19,15 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
     optimizer = torch.optim.SGD(model.parameters(), lr=lr)
     print ("lr= ", lr)
 
-    for x in range(5):
+    #otetaan aikaa kauan koko hommaan menee aikaa
+    start_time=time.perf_counter()
+
+    for x in range(20):
         print("kierros ", x+1)
-        for epoch in range(3): 
-            print(f"Epoch {epoch+1}\n-------------------------------")
+        #mitataan looppiin kulunut aika
+        epoch_start = time.perf_counter()
+        for epoch in range(30): 
+            # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
                 pred = model(X)
@@ -33,6 +40,13 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
                 # if batch % 100 == 0:
                 #     n, N = (batch + 1) * len(X), len(train_loader.dataset)
                 #     print(f"loss: {loss.item():>7f}  [{n:>5d}/{N:>5d}]")
+
+        epoch_end = time.perf_counter()
+        print(f"epochiin kulunut aika: {epoch_end - epoch_start:0.4}")
+        # str(datetime.timedelta(seconds=666))
+
+        #mitataan testaamiseen kulunut aika
+        testing_start = time.perf_counter()
 
         torch.save(model.state_dict(), PATH)
 
@@ -48,10 +62,10 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
         X, y = dataiter.next()
         with torch.no_grad():
             pred = model(X)
-        print("True: ")
-        print(y[:2])
-        print("Prediction: ")
-        print(pred[:2])
+        # print("True: ")
+        # print(y[:2])
+        # print("Prediction: ")
+        # print(pred[:2])
 
         num_batches = len(test_loader)
         test_loss = 0
@@ -60,10 +74,15 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
                 pred = model(X)
                 test_loss += loss_fn(pred, y).item()
         test_loss /= num_batches
-        print(f"Avg loss: {test_loss:>8f} \n")
+        print(f"Avg loss: {test_loss:>8f}")
+
+        testing_end = time.perf_counter()
+        print(f"testaamiseen kulunut aika: {testing_end - testing_start:0.4} \n")
+
+    end_time=time.perf_counter()
+    print(f"koko hommaan meni aikaa: {end_time - start_time:0.4}")
 
 
 
 
-# training_and_testing()
 
