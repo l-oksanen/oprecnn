@@ -43,20 +43,32 @@ class DotProdLayer(nn.Module):
 
 
 class OperatorNet(nn.Module):
-    def __init__(self, dim, num_layers, scalar_output=False):
+    def __init__(self, dim, num_layers, scalar_output=False, useReLU=False):
         super(OperatorNet, self).__init__()
         self.dim = dim
         self.scalar_output = scalar_output
         self.op_layers = [OperatorLayer(dim) for i in range(num_layers)]
         self.layers = nn.ModuleList(self.op_layers)
+        self.useReLU = useReLU
+        if self.useReLU:
+            self.op_layers1 = [OperatorLayer(dim) for i in range(num_layers)]
+            self.relu_layers = [nn.ReLU() for i in range(num_layers)]
+            self.layers.extend(self.op_layers1)
+            self.layers.extend(self.relu_layers)
         if scalar_output: 
             self.dp_layer = DotProdLayer(dim)
             self.layers.append(self.dp_layer)
 
     def forward(self, X):
         h = zeros(self.dim, 1) # a column vector
-        for layer in self.op_layers:
-            h = layer(X, h)
+        for i in range(len(self.op_layers)):
+            op0 = self.op_layers[i]
+            if self.useReLU: 
+                op1 = self.op_layers1[i]
+                relu = self.relu_layers[i]
+                h = op0(X, h) + relu(op1(X, h))
+            else:
+                h = op0(X, h)
         if self.scalar_output:
             h = self.dp_layer(h)
         return h
