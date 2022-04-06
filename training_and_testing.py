@@ -7,7 +7,8 @@ import time
 import opnet
 from simple_inversion_data import generate_data, save_data, load_data
 
-PATH = './simple_inversion_net.pth'
+PATH = './simple_inversion_net2.pth'
+# PATH = './simple_inversion_netReLU.pth'
 
 def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr):
     # Load the training data
@@ -22,11 +23,11 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
     #otetaan aikaa kauan koko hommaan menee aikaa
     start_time=time.perf_counter()
 
-    for x in range(20):
+    for x in range(15):
         print("kierros ", x+1)
         #mitataan looppiin kulunut aika
         epoch_start = time.perf_counter()
-        for epoch in range(30): 
+        for epoch in range(15): 
             # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
@@ -38,11 +39,11 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
                 optimizer.step()
                 # Print statistics
                 # if batch % 100 == 0:
-                #     n, N = (batch + 1) * len(X), len(train_loader.dataset)
-                #     print(f"loss: {loss.item():>7f}  [{n:>5d}/{N:>5d}]")
+                #    n, N = (batch + 1) * len(X), len(train_loader.dataset)
+                #    print(f"loss: {loss.item():>7f}  [{n:>5d}/{N:>5d}]")
 
         epoch_end = time.perf_counter()
-        print(f"epochiin kulunut aika: {epoch_end - epoch_start:0.4}")
+        # print(f"epochiin kulunut aika: {epoch_end - epoch_start:0.4}")
         # str(datetime.timedelta(seconds=666))
 
         #mitataan testaamiseen kulunut aika
@@ -77,10 +78,10 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
         print(f"Avg loss: {test_loss:>8f}")
 
         testing_end = time.perf_counter()
-        print(f"testaamiseen kulunut aika: {testing_end - testing_start:0.4} \n")
+        # print(f"testaamiseen kulunut aika: {testing_end - testing_start:0.4} \n")
 
     end_time=time.perf_counter()
-    print(f"koko hommaan meni aikaa: {end_time - start_time:0.4}")
+    # print(f"koko hommaan meni aikaa: {end_time - start_time:0.4}")
 
 
 
