@@ -73,3 +73,11 @@ class OperatorNet(nn.Module):
         if self.scalar_output:
             h = self.dp_layer(h)
         return h
+
+    def does_it_use_relu(self):
+        layer: nn.ReLU
+        for layer in self.layers:
+            print("Layer:")
+            print(layer)
+            print(layer.__dict__)
+            

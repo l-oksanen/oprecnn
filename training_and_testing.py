@@ -7,7 +7,8 @@ import time
 import opnet
 from simple_inversion_data import generate_data, save_data, load_data
 
-PATH = './simple_inversion_netPlusMinusReLU.pth'
+PATH = './simple_inversion_net4.pth'
+# PATH = './simple_inversion_netPlusMinusReLU.pth'
 # PATH = './simple_inversion_netNEGA.pth'
 # PATH = './simple_inversion_netReLU.pth'
 
@@ -30,11 +31,11 @@ def training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr
     #otetaan aikaa kauan koko hommaan menee aikaa
     start_time=time.perf_counter()
 
-    for x in range(10):
+    for x in range(2):
         print("kierros ", x+1)
         # measure the time consumed in epoch
         epoch_start = time.perf_counter()
-        for epoch in range(10): 
+        for epoch in range(2): 
             # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
