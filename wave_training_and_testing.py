@@ -18,9 +18,10 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
     optimizer = torch.optim.SGD(model.parameters(), lr=lr)
     print ("lr= ", lr)
 
-    for x in range(2):
-        for epoch in range(2):
-            print(f"Epoch {epoch+1}\n-------------------------------")
+    for x in range(10):
+        print("kierros ", x+1)
+        for epoch in range(5):
+            # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
                 pred = model(X)
@@ -32,7 +33,7 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
                 # Print statistics
                 if batch % 10 == 0:
                     n, N = (batch + 1) * len(X), len(train_loader.dataset)
-                    print(f"loss: {loss.item():>7f}  [{n:>5d}/{N:>5d}]")
+                    # print(f"loss: {loss.item():>7f}  [{n:>5d}/{N:>5d}]")
 
         torch.save(model.state_dict(), PATH)
 
