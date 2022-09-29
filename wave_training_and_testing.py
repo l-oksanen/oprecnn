@@ -16,11 +16,11 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
 
     # Learning rate parameter is from the quickstart guide
     optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-    print ("lr= ", lr)
+    #print ("lr= ", lr)
 
-    for x in range(10):
-        print("kierros ", x+1)
-        for epoch in range(5):
+    for x in range(20):
+        # print("kierros ", x+1)
+        for epoch in range(20):
             # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
                 # Compute prediction error
@@ -49,10 +49,10 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
         X, y = dataiter.next()
         with torch.no_grad():
             pred = model(X)
-        print("True: ")
-        print(y[:2])
-        print("Prediction: ")
-        print(pred[:2])
+        # print("True: ")
+        # print(y[:2])
+        # print("Prediction: ")
+        # print(pred[:2])
 
         num_batches = len(test_loader)
         test_loss = 0
@@ -61,4 +61,4 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
                 pred = model(X)
                 test_loss += loss_fn(pred, y).item()
         test_loss /= num_batches
-        print(f"Avg loss: {test_loss:>8f} \n")
+        print(f"{x+1} {test_loss:>8f} \n") #antaa kierrosen ja avglossin
