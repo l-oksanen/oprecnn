@@ -5,13 +5,10 @@ import torch
 import opnet
 from volume_inversion_data import generate_data, save_data, load_data
 
-PATH = './volume_inversion_net.pth'
-
-
-def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr):
+def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELoss, lr, PATH, train_data_path, test_data_path):
     # Load the training data
     train_loader = torch.utils.data.DataLoader(
-    load_data("volume_inversion_train_data.npz"),
+    load_data(train_data_path),
     batch_size=64)
 
     # Learning rate parameter is from the quickstart guide
@@ -42,7 +39,7 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
 
         # Load the testing data
         test_loader = torch.utils.data.DataLoader(
-            load_data("volume_inversion_test_data.npz"), 
+            load_data(test_data_path), 
             batch_size=64)
 
         dataiter = iter(test_loader)
@@ -61,4 +58,4 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
                 pred = model(X)
                 test_loss += loss_fn(pred, y).item()
         test_loss /= num_batches
-        print(f"{x+1} {test_loss:>8f} \n") #antaa kierrosen ja avglossin
+        print(f"{x+1} {test_loss:>8f}") #antaa kierrosen ja avglossin
