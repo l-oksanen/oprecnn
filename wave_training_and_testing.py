@@ -13,10 +13,15 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
 
     # Learning rate parameter is from the quickstart guide
     optimizer = torch.optim.SGD(model.parameters(), lr=lr)
-    #print ("lr= ", lr)
 
-    for x in range(20):
-        # print("kierros ", x+1)
+    # we want the code to calculate the average loss until the point where
+    # the average loss is under sertain given point "limitpoint"
+    limit_point = 1e-5
+    avg_loss_pre = 10 # average loss at the previous round. Gave some random big number for starters
+    avg_loss_now = 9 # average loss at this round. Gave some random big number for starters
+    loop_counter = 0
+    while (avg_loss_pre - avg_loss_now)>limit_point:
+        loop_counter+=1
         for epoch in range(20):
             # print(f"Epoch {epoch+1}\n-------------------------------")
             for batch, (X, y) in enumerate(train_loader):
@@ -58,4 +63,6 @@ def wave_training_and_testing(model: opnet.OperatorNet, loss_fn: torch.nn.MSELos
                 pred = model(X)
                 test_loss += loss_fn(pred, y).item()
         test_loss /= num_batches
-        print(f"{x+1} {test_loss:>8f}") #antaa kierrosen ja avglossin
+        avg_loss_pre = avg_loss_now
+        avg_loss_now = test_loss
+        print(f"{loop_counter*20} {test_loss:>8f}") #antaa kierrosen ja avglossin
