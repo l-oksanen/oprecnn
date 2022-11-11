@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import torch.nn.init as init
 import torch.nn as nn
 
+# vastaa Lassasin artikkelin määritelmää 2.1
 class OperatorLayer(nn.Module):
     def __init__(self, dim):
         super(OperatorLayer, self).__init__()
@@ -72,3 +73,11 @@ class OperatorNet(nn.Module):
         if self.scalar_output:
             h = self.dp_layer(h)
         return h
+
+    def does_it_use_relu(self):
+        layer: nn.ReLU
+        for layer in self.layers:
+            print("Layer:")
+            print(layer)
+            print(layer.__dict__)
+            
