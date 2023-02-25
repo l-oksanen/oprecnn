@@ -3,11 +3,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - torchvision=0.11.1
-  - pytorch=1.10.0
-  - cpuonly=2.0
-  - torchaudio=0.10.0
-  - ipykernel=6.7.0
-  - scipy=1.7.3
-  - sympy=1.9
-  - matplotlib=3.5.1
+  - torchvision
+  - pytorch
+  - ipykernel
+  - scipy
+  - sympy
+  - matplotlib
